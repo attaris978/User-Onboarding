@@ -14,6 +14,13 @@ const Form = (props) => {
       terms:"",
       submitDisabled:true
   })
+  const [formError,setFormError] = useState({
+    name:"",
+    email:"",
+    password:"",
+    terms:""
+  })
+  
   return (
     <Former>
         <button disabled={formState.submitDisabled}>Submit!</button>
