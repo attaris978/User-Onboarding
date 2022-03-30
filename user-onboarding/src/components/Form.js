@@ -20,9 +20,23 @@ const Form = (props) => {
     password:"",
     terms:""
   })
-  
+  useEffect(() => {
+      formSchema.isValid(formState)
+      .then(valid => setFormState({...formState,submitDisabled:!valid}))
+  },[formState]);
+
+  const onChange = (event) => {
+      const {name,type,value,checked} = event.target;
+      //change callback here to update state and validate
+  }
+const onSubmit = (event) => {
+    //revalidate?
+    //post
+}
   return (
-    <Former>
+    <Former onSubmit={() => onSubmit()}>
+        <label for="formName">Name:</label>
+
         <button disabled={formState.submitDisabled}>Submit!</button>
     </Former>
   )
