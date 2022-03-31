@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import formSchema from "../metaland/formSchema.js";
-import axios from 'axios';
+import axios from "axios";
 
 const Former = styled.form`
   color: red;
 `;
 
 const Form = (props) => {
-    const {addUser} = props;
+  const { addUser } = props;
   const [buttonEnabled, setButtonEnabled] = useState(false);
   const [formState, setFormState] = useState({
     name: "",
@@ -29,26 +29,27 @@ const Form = (props) => {
 
   const onChange = (event) => {
     const { name, type, value, checked } = event.target;
+    const viableValue = type === "checkbox" ? checked : value;
 
-    if (type === "checkbox") {
-      console.log(type, checked);
-      setFormState({ ...formState, [name]: checked });
-    } else {
-      setFormState({ ...formState, [name]: value });
-    }
+    setFormState({ ...formState, [name]: viableValue });
+
+    Yup.reach(formSchema, [name])
+      .validate(viableValue)
+      .then((valid) => setFormError({ ...formError, [name]: "" }))
+      .catch(err => setFormError({...formError, [name]:err.errors[0]}))
   };
   const onSubmit = (event) => {
-      event.preventDefault();
+    event.preventDefault();
     fetch("https://reqres.in/api/users", {
       method: "POST",
       body: JSON.stringify(formState),
       headers: { "Content-type": "application/json; charset=UTF-8" },
     })
-    // axios.post("https://reqres.in/api/users",formState)
-    // .then(response => console.log(response));
-    .then(response => response.json())    
-    .then(json => addUser(json))
-    .catch(err => console.error(err))
+      // axios.post("https://reqres.in/api/users",formState)
+      // .then(response => console.log(response));
+      .then((response) => response.json())
+      .then((json) => addUser(json))
+      .catch((err) => console.error(err));
   };
   return (
     <Former onSubmit={(e) => onSubmit(e)}>
@@ -62,6 +63,7 @@ const Form = (props) => {
         onChange={(e) => onChange(e)}
         maxLength="30"
       />
+      {formError.name.length > 0 ? <p>{formError.name}</p> : null}
       <label htmlFor="formEmail">Email:</label>
       <input
         type="email"
@@ -72,6 +74,7 @@ const Form = (props) => {
         onChange={(e) => onChange(e)}
         maxLength="30"
       />
+      {formError.email.length > 0 ? <p>{formError.email}</p> : null}
       <label htmlFor="formPassword">Password:</label>
       <input
         type="password"
