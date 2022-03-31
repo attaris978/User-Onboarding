@@ -62,6 +62,7 @@ const Form = (props) => {
         placeholder="Name of User"
         onChange={(e) => onChange(e)}
         maxLength="30"
+        data-cy="nameInput"
       />
       {formError.name.length > 0 ? <p>{formError.name}</p> : null}
       <label htmlFor="formEmail">Email:</label>
@@ -73,6 +74,7 @@ const Form = (props) => {
         placeholder="User's Email Address"
         onChange={(e) => onChange(e)}
         maxLength="30"
+        data-cy="emailInput"
       />
       {formError.email.length > 0 ? <p>{formError.email}</p> : null}
       <label htmlFor="formPassword">Password:</label>
@@ -84,6 +86,7 @@ const Form = (props) => {
         placeholder="Enter New User Password"
         onChange={(e) => onChange(e)}
         maxLength="30"
+        data-cy="passwordInput"
       />
       <label htmlFor="formTerms">
         I have read and agree to the terms and conditions for usage:
@@ -94,8 +97,9 @@ const Form = (props) => {
         id="formTerms"
         checked={formState.terms}
         onChange={(e) => onChange(e)}
+        data-cy="termsInput"
       />
-      <button disabled={!buttonEnabled}>Submit!</button>
+      <button disabled={!buttonEnabled} data-cy="submitButton">Submit!</button>
     </Former>
   );
 };
