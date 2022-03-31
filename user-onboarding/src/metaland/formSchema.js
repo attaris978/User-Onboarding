@@ -10,6 +10,10 @@ const formSchema = Yup.object().shape({
     .required("Please enter the new user's email address"),
   password: Yup.string("Enter a valid password string")
     .trim()
-    .required("ou must enter a password")
+    .required("ou must enter a password"),
+  terms: Yup.boolean()
+    .required("You must accept the terms and conditions in order to continue"),
+  submitDisabled: Yup.boolean()
+
 });
 export default formSchema;

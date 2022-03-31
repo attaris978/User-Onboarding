@@ -8,12 +8,13 @@ const Former = styled.form`
 `;
 
 const Form = (props) => {
+  const [buttonEnabled,setButtonEnabled]=useState(false);
   const [formState, setFormState] = useState({
     name: "",
     email: "",
     password: "",
-    terms: "",
-    submitDisabled: true,
+    terms: false,
+    
   });
   const [formError, setFormError] = useState({
     name: "",
@@ -21,15 +22,19 @@ const Form = (props) => {
     password: "",
     terms: "",
   });
-  //   useEffect(() => {
-  //     formSchema
-  //       .isValid(formState)
-  //       .then((valid) => setFormState({ ...formState, submitDisabled: !valid }));
-  //   }, [formState]);
+    useEffect(() => {
+      formSchema
+        .isValid(formState)
+        .then((valid) => setButtonEnabled(valid))
+    }, [formState]);
 
   const onChange = (event) => {
     const { name, type, value, checked } = event.target;
+    console.log(checked);
+    if (type === "checkbox") setFormState({...formState,[name]:!checked})
+    else {
     setFormState({ ...formState, [name]: value });
+    }
     //change callback here to update state and validate
   };
   const onSubmit = (event) => {
@@ -68,7 +73,15 @@ const Form = (props) => {
       onChange={(e) => onChange(e)}
       maxLength="30"
       />
-      <button disabled={formState.submitDisabled}>Submit!</button>
+      <label htmlFor="formTerms">I have read and agree to the terms and conditions for usage:</label>
+      <input
+      type="checkbox"
+      name="terms"
+      id="formTerms"
+      checked={formState.terms}
+      onChange={(e) => onChange(e)}
+    />
+      <button disabled={!buttonEnabled}>Submit!</button>
     </Former>
   );
 };
