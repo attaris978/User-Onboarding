@@ -3,7 +3,7 @@ const UsersList = (props) => {
   return (
     <>
       {users.map((user) => {
-        return <h4>{user.name}</h4>;
+        return <h4>{user.name} {user.email}</h4>;
       })}
     </>
   );
